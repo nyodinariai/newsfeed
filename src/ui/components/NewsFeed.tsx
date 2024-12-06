@@ -37,7 +37,7 @@ export function NewsFeed() {
               title={item.title}
               description={item.description}
               url={item.url}
-              name={item.name}
+              source={item.source}
               published_at={item.published_at}
             />
           </div>

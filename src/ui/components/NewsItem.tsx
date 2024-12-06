@@ -7,16 +7,16 @@ interface NewsItemProps {
     title: string;
     description: string;
     url: string;
-    name: string
+    source: string
     published_at: string;
 }
 
-export function NewsItem({ title, description, url, name, published_at }: NewsItemProps) {
+export function NewsItem({ title, description, url, source, published_at }: NewsItemProps) {
   return (
     <Card className="overflow-hidden" style={{ marginBottom: '12px' }}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        <CardDescription>{name}</CardDescription>
+        <CardDescription>{source}</CardDescription>
         <CardDescription>{published_at}</CardDescription>
       </CardHeader>
       <CardContent>
