@@ -6,7 +6,7 @@ interface News {
     title: string;
     description: string;
     url: string;
-    source: string;
+    name: string;
     published_at: string;
 }
 
