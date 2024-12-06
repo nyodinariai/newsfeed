@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
+import { NewsArticle } from "../fetch-news/route";
 
 
 
@@ -13,7 +14,7 @@ export async function GET() {
     if(!articles || articles.length === 0) {
         return NextResponse.json({message: 'No articles found.'})
     }
-    const newsData = articles.map((article: any) => ({
+    const newsData = articles.map((article: NewsArticle) => ({
         title: article.title,
         description: article.description,
         url: article.url,

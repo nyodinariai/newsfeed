@@ -1,6 +1,18 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
+
+export interface NewsArticle {
+    title: string;
+    description: string;
+    url: string;
+    source: {
+      name: string;
+    };
+    publishedAt: string;
+  }
+
+
 export async function POST() {
     
     try{
@@ -14,7 +26,7 @@ export async function POST() {
             return NextResponse.json({error: "No Articles found"})
         }
 
-        const newsData = articles.map((article: any) => ({
+        const newsData = articles.map((article: NewsArticle) => ({
             title: article.title,
             description: article.description,
             url: article.url,
