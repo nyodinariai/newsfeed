@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { startNewsUpdater } from "@/lib/news-fetcher";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,6 +24,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  if (typeof window === 'undefined') {
+    startNewsUpdater(); // Start background updater on the server
+  }
   return (
     <html lang="en">
       <body
