@@ -9,9 +9,10 @@ export const startNewsUpdater = () => {
 
 
     setInterval(async () => {
+        const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL
         try {
           console.log('Fetching news...');
-          const response = await fetch('http://localhost:3000/api/update-news');
+          const response = await fetch(`${NEXT_PUBLIC_API_URL}/api/update-news`);
           const result = await response.json();
           console.log('News update result:', result);
         } catch (error) {
