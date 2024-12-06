@@ -18,7 +18,7 @@ export async function GET() {
         title: article.title,
         description: article.description,
         url: article.url,
-        source: article.source.name,
+        source: article.source,
         published_at: article.publishedAt,
       }));
     

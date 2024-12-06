@@ -38,6 +38,7 @@ export function NewsFeed() {
               description={item.description}
               url={item.url}
               source={item.source}
+              published_at={item.published_at}
             />
           </div>
         ))}

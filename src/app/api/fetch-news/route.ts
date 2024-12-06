@@ -6,9 +6,7 @@ export interface NewsArticle {
     title: string;
     description: string;
     url: string;
-    source: {
-      name: string;
-    };
+    source: string;
     publishedAt: string;
   }
 
@@ -30,7 +28,7 @@ export async function POST() {
             title: article.title,
             description: article.description,
             url: article.url,
-            source: article.source.name,
+            source: article.source,
             published_at: article.publishedAt,
         }))
 

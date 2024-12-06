@@ -3,24 +3,21 @@ import { Button } from "@/components/ui/button"
 import { ExternalLink } from 'lucide-react'
 
 interface NewsItemProps {
-  title: string
-  description: string
-  url: string
-  source: string
-  imageUrl?: string
+    id?: number;
+    title: string;
+    description: string;
+    url: string;
+    source: string;
+    published_at: string;
 }
 
-export function NewsItem({ title, description, url, source, imageUrl }: NewsItemProps) {
+export function NewsItem({ title, description, url, source, published_at }: NewsItemProps) {
   return (
     <Card className="overflow-hidden" style={{ marginBottom: '12px' }}>
-      {imageUrl && (
-        <div className="h-48 overflow-hidden">
-          <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
-        </div>
-      )}
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{source}</CardDescription>
+        <CardDescription>{published_at}</CardDescription>
       </CardHeader>
       <CardContent>
         <p>{description}</p>
