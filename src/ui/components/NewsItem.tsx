@@ -9,15 +9,17 @@ interface NewsItemProps {
     url: string;
     source: string
     published_at: string;
+    category: string
 }
 
-export function NewsItem({ title, description, url, source, published_at }: NewsItemProps) {
+export function NewsItem({ title, description, url, source, published_at, category }: NewsItemProps) {
   return (
     <Card className="overflow-hidden" style={{ marginBottom: '12px' }}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{source}</CardDescription>
         <CardDescription>{published_at}</CardDescription>
+        <CardDescription>{category}</CardDescription>
       </CardHeader>
       <CardContent>
         <p>{description}</p>

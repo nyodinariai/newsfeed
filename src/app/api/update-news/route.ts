@@ -6,7 +6,7 @@ import { NewsArticle } from "../fetch-news/route";
 
 export async function GET() {
     const NEWS_API_KEY = process.env.NEXT_PUBLIC_NEWS_API_KEY!;
-    const category= "business";
+    const category= "";
     const country = "us"
     const response = await fetch(`https://newsapi.org/v2/top-headlines?category=${category}&country=${country}&apiKey=${NEWS_API_KEY}`);
     const { articles } = await response.json()

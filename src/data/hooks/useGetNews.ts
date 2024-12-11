@@ -8,6 +8,7 @@ interface News {
     url: string;
     source: string
     published_at: string;
+    category: string
 }
 
 interface UseNewsResult{
@@ -47,6 +48,7 @@ export const useGetNews = (): UseNewsResult => {
             setPage((prev) => prev + 1)
         }
     }, [loading, hasMore]);
+    
 
     return { news, fetchMore, loading, hasMore}
 }
