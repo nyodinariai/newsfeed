@@ -10,6 +10,7 @@ export interface NewsArticle {
     };
     publishedAt: string;
     category: string;
+    created_at: string
   }
 
 
@@ -34,7 +35,8 @@ export async function POST(req: Request) {
             url: article.url,
             source: article.source.name,
             published_at: article.publishedAt,
-            category: category
+            category: category,
+            created_at: new Date().toISOString()
         }))
         .filter(
             (article: NewsArticle) =>

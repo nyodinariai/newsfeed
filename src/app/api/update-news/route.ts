@@ -8,7 +8,7 @@ export async function GET() {
     const NEWS_API_KEY = process.env.NEXT_PUBLIC_NEWS_API_KEY!;
     const category= "";
     const country = "us"
-    const response = await fetch(`https://newsapi.org/v2/top-headlines?category=${category}&country=${country}&apiKey=${NEWS_API_KEY}`);
+    const response = await fetch(`https://newsapi.org/v2/top-headlines?=${category}&=${country}&apiKey=${NEWS_API_KEY}`);
     const { articles } = await response.json()
 
     if(!articles || articles.length === 0) {
@@ -20,6 +20,8 @@ export async function GET() {
         url: article.url,
         source: article.source.name,
         published_at: article.publishedAt,
+        category: article.category,
+        created_at: new Date().toISOString()
       }));
     
       const { error } = await supabase.from('news').upsert(newsData);

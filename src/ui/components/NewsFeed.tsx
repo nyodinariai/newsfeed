@@ -4,11 +4,9 @@ import { useGetNews } from "@/data/hooks/useGetNews"
 import { useEffect, useRef, useCallback, useState } from "react"
 import NewsItem from "./NewsItem" 
 import { Skeleton } from "@/components/ui/skeleton"
-import { useRouter } from "next/navigation"
-import { revalidateTag } from "next/cache"
+import { Button } from "@/components/ui/button"
 
 export function NewsFeed() {
-    const router = useRouter()
     const [category, setCategory] = useState("")
     const [isFetching, setIsFetching] = useState(false)
     const { news, fetchMore, loading, hasMore } = useGetNews()
@@ -25,18 +23,7 @@ export function NewsFeed() {
     if (node) observer.current.observe(node)
   }, [loading, hasMore, fetchMore])
 
-  useEffect(() => {
-    return () => {
-      if (observer.current) {
-        observer.current.disconnect()
-      }
-    }
-  }, [])
-
-
   const handleCategoryChange = async (newCategory: string) => {
-    
-
     setCategory(newCategory);
     setIsFetching(true)
   
@@ -57,6 +44,14 @@ export function NewsFeed() {
   }
 
   useEffect(() => {
+    return () => {
+      if (observer.current) {
+        observer.current.disconnect()
+      }
+    }
+  }, [])
+
+  useEffect(() => {
 
   }, [category])
 
@@ -67,17 +62,13 @@ export function NewsFeed() {
       <div className="flex gap-4 mb-6">
         {[ "business", "science", "technology"].map(
           (cat) => (
-            <button
+            <Button
+            variant={"outline"}
               key={cat}
-              className={`px-4 py-2 rounded ${
-                category === cat
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 text-gray-700"
-              }`}
               onClick={() => handleCategoryChange(cat)}
             >
               {cat.charAt(0).toUpperCase() + cat.slice(1)}
-            </button>
+            </Button>
           )
         )}
       </div>
@@ -92,8 +83,8 @@ export function NewsFeed() {
               description={item.description}
               url={item.url}
               source={item.source}
-              published_at={item.published_at}
-              category={item.category.charAt(0).toUpperCase() + item.category.slice(1)}
+              published_at={item.published_at.split("T")[0].replaceAll("-", "/")}
+              category={item.category?.charAt(0).toUpperCase() + item.category?.slice(1)}
             />
           </div>
         ))}
