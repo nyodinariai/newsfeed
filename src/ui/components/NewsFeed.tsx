@@ -28,9 +28,24 @@ export function NewsFeed() {
     setIsFetching(true)
   
     try {
-        const res = await fetch(`/api/fetch-news?category=${newCategory}`, {
+
+      let res;
+
+      if(
+        newCategory !== "business" && 
+        newCategory !== "science" && 
+        newCategory !== "technology" &&
+        newCategory
+      ){
+
+        res = await fetch(`/api/fetch-news-by?category=${newCategory}`, {
           method: "POST",
         });
+      } else{
+        res = await fetch(`/api/fetch-news?category=${newCategory}`, {
+          method: "POST",
+        });
+      } 
   
         if (!res.ok) {
           throw new Error("Failed to fetch news for the selected category.");
@@ -55,7 +70,7 @@ export function NewsFeed() {
 
   }, [news])
 
-  const categories = [ "business", "science", "technology"];
+  const categories = [ "business", "science", "technology", "bitcoin", "brazil"];
   const menuItems = categories.map(cat => ({
     title: cat.charAt(0).toUpperCase() + cat.slice(1),
     action: () => handleCategoryChange(cat)
