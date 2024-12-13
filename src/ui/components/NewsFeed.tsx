@@ -3,13 +3,13 @@
 import { useGetNews } from "@/data/hooks/useGetNews"
 import { useEffect, useRef, useCallback, useState } from "react"
 import NewsItem from "./NewsItem" 
-import { Skeleton } from "@/components/ui/skeleton"
-import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/ui/shadcn/components/ui/skeleton"
+import { NavigationMenu } from "./header/NavigationMenu"
 
 export function NewsFeed() {
     const [category, setCategory] = useState("")
     const [isFetching, setIsFetching] = useState(false)
-    const { news, fetchMore, loading, hasMore } = useGetNews()
+    const { news, fetchMore, loading, hasMore, setNews } = useGetNews()
     const observer = useRef<IntersectionObserver | null>(null)
 
   const lastNewsItemRef = useCallback((node: HTMLDivElement | null) => {
@@ -53,29 +53,22 @@ export function NewsFeed() {
 
   useEffect(() => {
 
-  }, [category])
+  }, [news])
 
+  const categories = [ "business", "science", "technology"];
+  const menuItems = categories.map(cat => ({
+    title: cat.charAt(0).toUpperCase() + cat.slice(1),
+    action: () => handleCategoryChange(cat)
+  }))
 
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Category Buttons */}
-      <div className="flex gap-4 mb-6">
-        {[ "business", "science", "technology"].map(
-          (cat) => (
-            <Button
-            variant={"outline"}
-              key={cat}
-              onClick={() => handleCategoryChange(cat)}
-            >
-              {cat.charAt(0).toUpperCase() + cat.slice(1)}
-            </Button>
-          )
-        )}
+      <div className="mb-4">
+        <NavigationMenu items={menuItems}/>
       </div>
 
-      
-      
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 grid-cols-1">
         {news.map((item, index) => (
           <div key={item.id} ref={index === news.length - 1 ? lastNewsItemRef : null}>
             <NewsItem
@@ -89,8 +82,9 @@ export function NewsFeed() {
           </div>
         ))}
       </div>
+  
       {loading && (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
+        <div className="grid gap-6 grid-cols-1 mt-6">
           {[...Array(3)].map((_, i) => (
             <Skeleton key={i} className="h-[300px]" />
           ))}

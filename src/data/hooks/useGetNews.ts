@@ -1,3 +1,4 @@
+import { supabase } from "@/lib/supabase";
 import { useCallback, useEffect, useState } from "react";
 
 
@@ -16,6 +17,7 @@ interface UseNewsResult{
     fetchMore: () => void;
     loading: boolean;
     hasMore: boolean;
+    setNews: React.Dispatch<React.SetStateAction<News[]>>;
 }
 
 
@@ -49,6 +51,23 @@ export const useGetNews = (): UseNewsResult => {
         }
     }, [loading, hasMore]);
     
+    useEffect(() => {
+        const subscription = supabase
+          .channel("news")
+          .on(
+            "postgres_changes",
+            { event: "INSERT", schema: "public", table: "news" },
+            (payload) => {
+            const newArticle = payload.new as News;
+              setNews((prev) => [newArticle, ...prev]);
+            }
+          )
+          .subscribe();
+    
+        return () => {
+          supabase.removeChannel(subscription);
+        };
+      }, []);
 
-    return { news, fetchMore, loading, hasMore}
+    return { news, fetchMore, loading, hasMore, setNews}
 }
