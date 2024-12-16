@@ -7,9 +7,8 @@ import { Skeleton } from "@/ui/shadcn/components/ui/skeleton"
 import { NavigationMenu } from "./header/NavigationMenu"
 
 export function NewsFeed() {
-    const [category, setCategory] = useState("")
     const [isFetching, setIsFetching] = useState(false)
-    const { news, fetchMore, loading, hasMore, setNews } = useGetNews()
+    const { news, fetchMore, loading, hasMore, setNews, setCategory } = useGetNews()
     const observer = useRef<IntersectionObserver | null>(null)
 
   const lastNewsItemRef = useCallback((node: HTMLDivElement | null) => {
@@ -26,30 +25,10 @@ export function NewsFeed() {
   const handleCategoryChange = async (newCategory: string) => {
     setCategory(newCategory);
     setIsFetching(true)
-  
+    setNews([])
+    
     try {
-
-      let res;
-
-      if(
-        newCategory !== "business" && 
-        newCategory !== "science" && 
-        newCategory !== "technology" &&
-        newCategory
-      ){
-
-        res = await fetch(`/api/fetch-news-by?category=${newCategory}`, {
-          method: "POST",
-        });
-      } else{
-        res = await fetch(`/api/fetch-news?category=${newCategory}`, {
-          method: "POST",
-        });
-      } 
-  
-        if (!res.ok) {
-          throw new Error("Failed to fetch news for the selected category.");
-        }
+        setNews(news)
   
       } catch (error) {
         console.error("Error fetching category news:", error);
@@ -66,16 +45,14 @@ export function NewsFeed() {
     }
   }, [])
 
-  useEffect(() => {
+  const categories = ["business", "science", "technology", "bitcoin", "brazil"]
 
-  }, [news])
-
-  const categories = [ "business", "science", "technology", "bitcoin", "brazil"];
   const menuItems = categories.map(cat => ({
     title: cat.charAt(0).toUpperCase() + cat.slice(1),
     action: () => handleCategoryChange(cat)
   }))
 
+  
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Category Buttons */}
@@ -84,7 +61,7 @@ export function NewsFeed() {
       </div>
 
       <div className="grid gap-6 grid-cols-1">
-        {news.map((item, index) => (
+        {Array.isArray(news) && news.map((item, index) => (
           <div key={item.id} ref={index === news.length - 1 ? lastNewsItemRef : null}>
             <NewsItem
               title={item.title}
