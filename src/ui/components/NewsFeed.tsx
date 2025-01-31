@@ -68,7 +68,7 @@ export function NewsFeed() {
                 published_at={item.published_at
                   .split("T")[0]
                   .replaceAll("-", "/")}
-                category={item.category?.charAt(0).toUpperCase() + item.category?.slice(1)}
+                category={item.category ? item.category.charAt(0).toUpperCase() + item.category.slice(1) : "Sem Categoria"}
               />
             </div>
           ))}
