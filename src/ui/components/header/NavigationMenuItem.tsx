@@ -12,7 +12,7 @@ export function NavigationMenuItem({ title, action }: NavigationMenuItemProps) {
   return (
     <RadixNavigationMenuItem>
       <NavigationMenuLink asChild>
-        <Button onClick={action} variant="ghost">
+        <Button onClick={action} variant="ghost" formMethod="POST">
           {title}
         </Button>
       </NavigationMenuLink>

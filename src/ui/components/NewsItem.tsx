@@ -5,11 +5,11 @@ import { ExternalLink } from 'lucide-react'
 interface NewsItemProps {
     id?: number;
     title: string;
-    description: string;
+    description: string | null;
     url: string;
-    source: string
+    source: string | null;
     published_at: string;
-    category: string
+    category: string | null;
 }
 
 export function NewsItem({ title, description, url, source, published_at, category }: NewsItemProps) {

@@ -1,7 +1,6 @@
 
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { NewsArticle } from "../fetch-news/route";
 
 interface Articles{
     title: string;

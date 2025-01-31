@@ -29,35 +29,41 @@ export const useGetNews = (): UseNewsResult => {
 
   const fetchNews = useCallback(
     async (currentPage: number, currentCategory: string | null) => {
-
       setLoading(true);
       try {
         let response;
-        if(!currentCategory){
-          response = await fetch(
-             `/api/fetch-all-news?page=${currentPage}&limit=10`
-          );
-        } else if (
-          ["business", "science", "technology"].includes(currentCategory)
-        ) {
+  
+        if (!currentCategory) {
+          response = await fetch(`/api/fetch-all-news?page=${currentPage}&limit=10`);
+        } else if (["business", "science", "technology"].includes(currentCategory)) {
           response = await fetch(
             `/api/fetch-news?category=${currentCategory}&page=${currentPage}&limit=10`,
             { method: "POST" }
-          )
-        } else{
+          );
+        } else {
           response = await fetch(
             `/api/fetch-news-by?category=${currentCategory}&page=${currentPage}&limit=10`,
             { method: "POST" }
           );
         }
-        
-      if (!response.ok) {
-        throw new Error("Failed to fetch news.");
-      }
-      const { news: data } = await response.json();
+  
+        if (!response.ok) {
+          throw new Error("Failed to fetch news.");
+        }
 
-        setNews((prev) => (currentPage === 1 ? data : [...prev, ...data]));
-        setHasMore(news.length > 0);
+        const responseJson = await response.json();
+console.log("API Response JSON:", responseJson);
+  
+        const { news: data } = await response.json();
+  
+        // Ensure the fetched data is an array
+        if (Array.isArray(data)) {
+          setNews((prev) => (currentPage === 1 ? data : [...prev, ...data]));
+          setHasMore(data.length > 0); // Use the fetched data's length, not the state
+        } else {
+          console.error("Fetched data is not an array:", data);
+          setHasMore(false);
+        }
       } catch (error) {
         console.error("Error fetching news:", error);
       } finally {
@@ -72,13 +78,13 @@ export const useGetNews = (): UseNewsResult => {
       setPage(1); // Reset to the first page when the category changes
       fetchNews(1, category);
     }
-  }, [category, fetchNews]);
+  }, [category]);
 
   useEffect(() => {
     if (page > 1) {
       fetchNews(page, category);
     }
-  }, [page, category, fetchNews]);
+  }, [page, category]);
 
   const fetchMore = useCallback(() => {
     if (!loading && hasMore) {
@@ -94,7 +100,7 @@ export const useGetNews = (): UseNewsResult => {
         { event: "INSERT", schema: "public", table: "news" },
         (payload) => {
           const newArticle = payload.new as News;
-          setNews((prev) => [newArticle, ...prev]);
+          setNews((prev) => (Array.isArray(prev) ? [newArticle, ...prev] : [newArticle]));
         }
       )
       .subscribe();
