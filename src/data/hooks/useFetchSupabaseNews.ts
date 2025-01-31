@@ -24,7 +24,7 @@ export const useFetchSupabaseNews = () => {
             .from("news")
             .select("*")
             .order("published_at", { ascending: false})
-            .ilike("category", category || "%")
+            .eq("category", category === null ? "business" : category || "%")
             .range((page - 1)* 10, page *10 -1)
 
             if (error){
