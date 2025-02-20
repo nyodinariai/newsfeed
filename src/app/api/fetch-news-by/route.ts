@@ -70,7 +70,7 @@ export async function POST(req: Request){
 
 
       console.log(newsData)
-        const { error } = await supabase.from('news').upsert(newsData);
+        const { error } = await supabase.from('news').upsert(newNews);
     
         if (error) {
             console.error('Supabase error', error)
